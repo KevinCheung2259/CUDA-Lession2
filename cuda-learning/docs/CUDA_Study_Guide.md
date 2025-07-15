@@ -26,6 +26,13 @@
 - 实现高效的矩阵乘法算法
 - 掌握性能分析工具的使用
 
+### ⭐ 推荐预习材料
+
+- [CUDA内存模型](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#memory-model)
+- [CUDA性能优化指南](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#performance-optimization)
+- [CUDA共享内存](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared-memory)
+- [介绍矩阵乘法——从自己手搓到CUTLASS实现](https://dingfen.github.io/2021/10/20/2021-10-20-cuda-with-matmul)
+
 ### 📂 项目结构
 
 ```

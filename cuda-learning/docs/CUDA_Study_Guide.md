@@ -32,6 +32,7 @@
 - [CUDA性能优化指南](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#performance-optimization)
 - [CUDA共享内存](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#shared-memory)
 - [介绍矩阵乘法——从自己手搓到CUTLASS实现](https://dingfen.github.io/2021/10/20/2021-10-20-cuda-with-matmul)
+- [共享内存之bank冲突](https://segmentfault.com/a/1190000007533157)
 
 ### 📂 项目结构
 

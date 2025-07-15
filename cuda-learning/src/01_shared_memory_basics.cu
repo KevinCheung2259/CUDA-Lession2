@@ -12,8 +12,6 @@ __global__ void vector_reduce_global(float* input, float* output, int n) {
     for (int i = tid; i < n; i += stride) {
         sum += input[i];
     }
-    
-    // 简单的归约，仅用于对比性能
     atomicAdd(output, sum);
 }
 
@@ -39,40 +37,6 @@ __global__ void vector_reduce_shared(float* input, float* output, int n) {
     // 块内的第一个线程将结果写回全局内存
     if (tid == 0) {
         atomicAdd(output, sdata[0]);
-    }
-}
-
-// 展示共享内存Bank冲突的例子
-__global__ void shared_memory_bank_conflict(float* input, float* output, int n) {
-    extern __shared__ float sdata[];
-    
-    int tid = threadIdx.x;
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    
-    if (idx < n) {
-        // 产生Bank冲突的访问模式 - 同一warp中的线程访问相同bank
-        sdata[tid * 2] = input[idx];
-        __syncthreads();
-        
-        // 读取时也会产生bank冲突
-        output[idx] = sdata[tid * 2];
-    }
-}
-
-// 避免Bank冲突的优化版本
-__global__ void shared_memory_no_bank_conflict(float* input, float* output, int n) {
-    extern __shared__ float sdata[];
-    
-    int tid = threadIdx.x;
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    
-    if (idx < n) {
-        // 使用填充避免bank冲突
-        int padded_idx = tid + (tid / 32);  // 每32个元素添加一个填充
-        sdata[padded_idx] = input[idx];
-        __syncthreads();
-        
-        output[idx] = sdata[padded_idx];
     }
 }
 
@@ -132,6 +96,8 @@ int main() {
     printf("全局内存归约:\n");
     printf("  结果: %.0f\n", *h_output);
     printf("  时间: %.3f ms\n\n", time_global);
+
+
     
     // 测试2: 使用共享内存的归约
     check_cuda_error(cudaMemset(d_output, 0, sizeof(float)), "reset output");
